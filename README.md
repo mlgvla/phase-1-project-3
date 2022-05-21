@@ -1,0 +1,3 @@
+Phase 1 Project
+
+This program takes all 151 of the first gen pokemon and displays them on the window. The focus pokemon is shown at the top with extra information about the pokemon. Clicking on a pokemon's name or image will change the focus pokemon. Clicking on the star next to the pokemon's name will favorite that pokemon. Checking the checkbox labelled "Favorites" will remake the list of pokemon with only the favorited pokemon.
