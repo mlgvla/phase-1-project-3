@@ -32,11 +32,16 @@ async function fetchPokemon(i, data, pokemonInfo) {
 function createPage(info) {
     const body = document.getElementsByTagName('body')[0];
     body.innerHTML = `
-        <input type="checkbox" name="favorite" value="show-all">
-        <label for="favorite">Favorites</label>
+        <div  class="d-flex justify-content-center align-items-center">
+            <input type="checkbox" name="favorite" value="show-all">
+            <label class="ps-1" for="favorite">Favorites</label>
+        </div>
     `
     let check = document.getElementsByTagName('input')[0];
+    
+    
     let ul = document.createElement('ul');
+    ul.setAttribute('class','list-group list-group-horizontal d-flex flex-wrap justify-content-center')
     body.appendChild(ul);
     ul.setAttribute('style', 'list-style: none')
     createList(info, check.value);
@@ -65,9 +70,11 @@ function createList(info, value) {
     while (info[i]) {
         if (info[i]['favorite'] === true || value === 'show-all') {
             let li = document.createElement('li');
+            li.setAttribute('class', 'list-group-item');
             let div = document.createElement('div');
+            let name = info[i]['name'].slice(0, 1).toUpperCase() + info[i]['name'].slice(1, info[i]['name'].length);
             div.innerHTML = `
-                <p>${i+1}. ${info[i]['name']}</p>            
+                <p>${i+1}. ${name}</p>            
                 <img src="${info[i]['image']}" height="200" width="200"/>
             `
             li.appendChild(div);
@@ -99,15 +106,33 @@ function createCard(pokemonList, target) {
     body.insertBefore(div, body.firstChild);
     let abilities = makeString(pokemon, 'abilities', 'ability');
     let types = makeString(pokemon, 'types', 'type');
-    
-    div.innerHTML = `
-        <img src="${pokemon.image}"/>
-        <h4><b>${pokemon.name}</b> <span></span></h4>
-        <p>Abilities: ${abilities}</p>
-        <p>Types: ${types}</p>
-        <p>HP: ${pokemon.stats[0]['base_stat']} Attack: ${pokemon.stats[1]['base_stat']} Defense: ${pokemon.stats[2]['base_stat']} Sp. Attack: ${pokemon.stats[3]['base_stat']} Sp. Defense: ${pokemon.stats[4]['base_stat']} Speed: ${pokemon.stats[5]['base_stat']}
-    `
+    div.setAttribute('class', 'card top-0 start-50 translate-middle-x');
     div.setAttribute('id', 'card');
+    div.setAttribute('style', 'width: 30rem;')
+    let name = pokemon.name.slice(0, 1).toUpperCase() + pokemon.name.slice(1, pokemon.name.length);
+    div.innerHTML = `
+        <img src="${pokemon.image}" class="card-img-top"/>
+        <div class="card-body text-center">    
+            <h5 class="card-title text-center"><b>${name}</b> <span></span></h5>
+            <p class="card-text text-center">Abilities: ${abilities}</p>
+            <p class="card-text text-center">Types: ${types}</p>
+            <table class="d-flex justify-content-center text-start">    
+                <tr>
+                    <td class="card-text pe-3">HP: ${pokemon.stats[0]['base_stat']}</td>
+                    <td class="card-text">Attack: ${pokemon.stats[1]['base_stat']}</td>
+                </tr>
+                <tr>
+                    <td class="card-text pe-3">Defense: ${pokemon.stats[2]['base_stat']}</td>
+                    <td class="card-text">Sp. Attack: ${pokemon.stats[3]['base_stat']}</td>
+                </tr>
+                <tr>
+                    <td class="card-text pe-3">Sp. Defense: ${pokemon.stats[4]['base_stat']}</td>
+                    <td class="card-text">Speed: ${pokemon.stats[5]['base_stat']}</td>
+                </tr>
+            </table>
+        </div>
+        `
+    //<p class="card-text">HP: ${pokemon.stats[0]['base_stat']} Attack: ${pokemon.stats[1]['base_stat']} <br>Defense: ${pokemon.stats[2]['base_stat']} Sp. Attack: ${pokemon.stats[3]['base_stat']} <br>Sp. Defense: ${pokemon.stats[4]['base_stat']} Speed: ${pokemon.stats[5]['base_stat']}</p>
     let span = document.getElementsByTagName('span')[0];
     span.setAttribute('style', 'color:gold');
     if (pokemon.favorite === true) {
@@ -132,7 +157,9 @@ function createCard(pokemonList, target) {
 function makeString(pokemon, key, keyTwo) {
     let attribute = '';
     for (let i = 0; i < pokemon[key].length; i++) {
-        attribute = attribute + `${pokemon[key][i][keyTwo]['name']}, `
+        let text = pokemon[key][i][keyTwo]['name'];
+        text = text.slice(0, 1).toUpperCase() + text.slice(1, text.length);
+        attribute = attribute + `${text}, `
     } 
     attribute = attribute.slice(0, -2);
     return attribute;
