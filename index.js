@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 async function getInfo(data) {
+    console.log(data)
+    data.sort((a, b) => {
+        return a.name.localeCompare(b.name)
+    })
+    console.log(data)
     const pokemonInfo = {};
     for (let i = 0; i < data.length; i++) {
         pokemonInfo[i] = {};
